@@ -5,7 +5,6 @@ format="markdown"
 backtick_references=false
 file = {
    "./LEEF-b3d",
-   "./LEEF-b3d/modlib",
    "./LEEF-class",
    "./LEEF-filesystem/modlib",
    "./LEEF-math/modules"
