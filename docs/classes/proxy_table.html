@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Luanti Extended Engine Features</title>
+    <link rel="stylesheet" href="../ldoc_new.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LEEF</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/new_class.html">new_class</a></li>
+  <li><strong>proxy_table</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/b3d_reader.html">b3d_reader</a></li>
+  <li><a href="../modules/b3d_writer.html">b3d_writer</a></li>
+  <li><a href="../modules/b3d_nodes.html">b3d_nodes</a></li>
+  <li><a href="../modules/binary.html">binary</a></li>
+  <li><a href="../modules/utils.html">utils</a></li>
+  <li><a href="../modules/paths.html">paths</a></li>
+  <li><a href="../modules/math.bound2.html">math.bound2</a></li>
+  <li><a href="../modules/math.bound3.html">math.bound3</a></li>
+  <li><a href="../modules/math.bvh.html">math.bvh</a></li>
+  <li><a href="../modules/math.color.html">math.color</a></li>
+  <li><a href="../modules/math.constants.html">math.constants</a></li>
+  <li><a href="../modules/math.intersect.html">math.intersect</a></li>
+  <li><a href="../modules/math.mat4.html">math.mat4</a></li>
+  <li><a href="../modules/math.mesh.html">math.mesh</a></li>
+  <li><a href="../modules/math.octree.html">math.octree</a></li>
+  <li><a href="../modules/math.quat.html">math.quat</a></li>
+  <li><a href="../modules/math.simplex.html">math.simplex</a></li>
+  <li><a href="../modules/math.utils.html">math.utils</a></li>
+  <li><a href="../modules/math.vec2.html">math.vec2</a></li>
+  <li><a href="../modules/math.vec3.html">math.vec3</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>proxy_table</code></h1>
+<p>immutable proxy tables for protection of variables.</p>
+<p> WARNING: this is not technically a class, it is not based off <code>new_class</code>. And thus does not have an inherit or construct method.</p>
+
+<p> The point of this module is to allow somebody to create a read only table based off of a normal lua table. Attempting to modify a proxy table will throw an error.
+ also note there is no good way to print this because tables are tied to their proxies independently, and then grabbed through the __index method rather then keeping a "working tree" of sub-tables.
+ This is apart of the <a href="https://github.com/Luanti-Extended-Engine-Features/LEEF-class">LEEF-class</a> module.</p>
+
+<p> subtables will belong to the first proxy structure that contains it, an unintended consequence of this is that destroying proxy tables that share proxys will likely result in the proxy table having
+ to be reinstantiated (automatically) on the next __index call for it. (While this is technically avoidable, it'd make things more complicated and this codebase is already messy.)</p>
+
+<p> class is found as <code>leef.proxy_table</code>.</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#leef.proxy_table.new">leef.proxy_table.new (og_table, parent)</a></td>
+	<td class="summary">create a new proxy table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Proxy_table.get_or_create">Proxy_table.get_or_create (og_table, parent)</a></td>
+	<td class="summary">get (if it exists) or create a proxy table from an original</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Proxy_table.destroy_proxy">Proxy_table.destroy_proxy (parent)</a></td>
+	<td class="summary">removes all local references to the parent table, it's proxy, aswell as subtables and their proxies.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#leef.proxy_table">leef.proxy_table</a></td>
+	<td class="summary">global variables</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#proxy_table.__proxy_table_parent">proxy_table.__proxy_table_parent</a></td>
+	<td class="summary">variable indicating the highest level table in the structure</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "leef.proxy_table.new"></a>
+    <strong>leef.proxy_table.new (og_table, parent)</strong>
+    </dt>
+    <dd>
+    create a new proxy table
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">og_table</span>
+         original table
+        </li>
+        <li><span class="parameter">parent</span>
+         (optional) this is used internally to define which high level table a child proxy belongs to
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        proxy table
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Proxy_table.get_or_create"></a>
+    <strong>Proxy_table.get_or_create (og_table, parent)</strong>
+    </dt>
+    <dd>
+    get (if it exists) or create a proxy table from an original
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">og_table</span>
+         original table
+        </li>
+        <li><span class="parameter">parent</span>
+         (optional) this is used internally to define which high level table a child proxy belongs to (if a new one is created.)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        proxy table
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Proxy_table.destroy_proxy"></a>
+    <strong>Proxy_table.destroy_proxy (parent)</strong>
+    </dt>
+    <dd>
+    removes all local references to the parent table, it's proxy, aswell as subtables and their proxies.  This obviously will not GC unless the refs are cleared from all other variables globally.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">parent</span>
+         the table/parent of subtables you wish to remove.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "leef.proxy_table"></a>
+    <strong>leef.proxy_table</strong>
+    </dt>
+    <dd>
+    global variables
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">proxies_by_tables</span>
+         a list of proxy tables indexed by their original tables
+        </li>
+        <li><span class="parameter">tables_by_proxies</span>
+         a list of original tables indexed by their proxy tables
+        </li>
+        <li><span class="parameter">proxy_children</span>
+         lists of children indexed by their highest level parent table. I.e. <code>{ [parent_ref1] = {child_proxy1, child_proxy2},  [parent_ref2] = {...} }</code>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "proxy_table.__proxy_table_parent"></a>
+    <strong>proxy_table.__proxy_table_parent</strong>
+    </dt>
+    <dd>
+    variable indicating the highest level table in the structure
+
+
+    <ul>
+        <li><span class="parameter">__proxy_table_parent</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2024-12-23 14:26:55 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -6,7 +6,7 @@ backtick_references=false
 file = {
    "./LEEF-b3d",
    "./LEEF-class",
-   "./LEEF-filesystem/modlib",
+   "./LEEF-filesystem",
    "./LEEF-math/modules"
 }
 dir="./docs"

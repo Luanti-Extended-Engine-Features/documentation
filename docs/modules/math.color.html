@@ -44,6 +44,7 @@
   <li><a href="../modules/b3d_writer.html">b3d_writer</a></li>
   <li><a href="../modules/b3d_nodes.html">b3d_nodes</a></li>
   <li><a href="../modules/binary.html">binary</a></li>
+  <li><a href="../modules/utils.html">utils</a></li>
   <li><a href="../modules/paths.html">paths</a></li>
   <li><a href="../modules/math.bound2.html">math.bound2</a></li>
   <li><a href="../modules/math.bound3.html">math.bound3</a></li>
@@ -63,6 +64,7 @@
 <h2>Classes</h2>
 <ul class="nowrap">
   <li><a href="../classes/new_class.html">new_class</a></li>
+  <li><a href="../classes/proxy_table.html">proxy_table</a></li>
 </ul>
 
 </div>
@@ -77,7 +79,7 @@
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#new">new (x, g, b, a)</a></td>
+	<td class="name" nowrap><a href="#new">new (r, g, b, a)</a></td>
 	<td class="summary">The public constructor.</td>
 	</tr>
 	<tr>
@@ -89,51 +91,63 @@
 	<td class="summary">Convert hue,saturation,value to color object.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#invert">invert (to)</a></td>
+	<td class="name" nowrap><a href="#invert">invert (c)</a></td>
 	<td class="summary">Invert a color.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#lighten">lighten (to, amount)</a></td>
+	<td class="name" nowrap><a href="#lighten">lighten (c, v)</a></td>
 	<td class="summary">Lighten a color by a component-wise fixed amount (alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#lerp">lerp (at, at, s)</a></td>
+	<td class="name" nowrap><a href="#lerp">lerp (a, b, s)</a></td>
 	<td class="summary">Interpolate between two colors.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#unpack">unpack (to)</a></td>
+	<td class="name" nowrap><a href="#unpack">unpack (c)</a></td>
 	<td class="summary">Unpack a color into individual components in 0-1.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#as_255">as_255 (to)</a></td>
+	<td class="name" nowrap><a href="#as_255">as_255 (c)</a></td>
 	<td class="summary">Unpack a color into individual components in 0-255.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#darken">darken (to, amount)</a></td>
+	<td class="name" nowrap><a href="#darken">darken (c, v)</a></td>
 	<td class="summary">Darken a color by a component-wise fixed amount (alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#multiply">multiply (to, to)</a></td>
+	<td class="name" nowrap><a href="#multiply">multiply (c, v)</a></td>
 	<td class="summary">Multiply a color's components by a value (alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#opacity">opacity (to, to)</a></td>
+	<td class="name" nowrap><a href="#alpha">alpha (c, v)</a></td>
+	<td class="summary">directly set alpha channel</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#opacity">opacity (c, v)</a></td>
 	<td class="summary">Multiply a color's alpha by a value</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#hue">hue (to, to)</a></td>
+	<td class="name" nowrap><a href="#hue">hue (col, hue)</a></td>
 	<td class="summary">Set a color's hue (saturation, value, alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#saturation">saturation (to, to)</a></td>
+	<td class="name" nowrap><a href="#saturation">saturation (col, percent)</a></td>
 	<td class="summary">Set a color's saturation (hue, value, alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#value">value (to, to)</a></td>
+	<td class="name" nowrap><a href="#value">value (col, percent)</a></td>
 	<td class="summary">Set a color's value (saturation, hue, alpha unchanged)</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#is_color">is_color (to)</a></td>
+	<td class="name" nowrap><a href="#gamma_to_linear">gamma_to_linear (r, g, b, a)</a></td>
+	<td class="summary">convert gamma to linear.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#linear_to_gamma">linear_to_gamma (r, g, b, a)</a></td>
+	<td class="summary">convert linear to gamma.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#is_color">is_color (a)</a></td>
 	<td class="summary">Check if color is valid</td>
 	</tr>
 	<tr>
@@ -162,7 +176,7 @@
     <dl class="function">
     <dt>
     <a name = "new"></a>
-    <strong>new (x, g, b, a)</strong>
+    <strong>new (r, g, b, a)</strong>
     </dt>
     <dd>
     The public constructor.
@@ -170,11 +184,8 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">x</span>
-         Can be of three types: </br>
- number red component 0-1
- table {r, g, b, a}
- nil for {0,0,0,0}
+        <li><span class="parameter">r</span>
+         (<strong><em>nil</em></strong> | <strong><em>float</em></strong> | <strong><em>table</em></strong>) can be a table <code>{r,g,b,a}</code>, nil for <code>{0,0,0,0}</code> or <code>r</code> in rgba.
         </li>
         <li><span class="parameter">g</span>
             <span class="types"><span class="type">number</span></span>
@@ -277,7 +288,7 @@
 </dd>
     <dt>
     <a name = "invert"></a>
-    <strong>invert (to)</strong>
+    <strong>invert (c)</strong>
     </dt>
     <dd>
     Invert a color.
@@ -285,9 +296,9 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">c</span>
             <span class="types"><span class="type">color</span></span>
-         invert
+         color to invert
         </li>
     </ul>
 
@@ -295,7 +306,9 @@
     <ol>
 
            <span class="types"><span class="type">color</span></span>
-        out
+
+
+
     </ol>
 
 
@@ -304,7 +317,7 @@
 </dd>
     <dt>
     <a name = "lighten"></a>
-    <strong>lighten (to, amount)</strong>
+    <strong>lighten (c, v)</strong>
     </dt>
     <dd>
     Lighten a color by a component-wise fixed amount (alpha unchanged)
@@ -312,13 +325,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">c</span>
             <span class="types"><span class="type">color</span></span>
-         lighten
+         to lighten
         </li>
-        <li><span class="parameter">amount</span>
-            <span class="types"><span class="type">number</span></span>
-         to increase each component by, 0-1 scale
+        <li><span class="parameter">v</span>
+            <span class="types"><span class="type">float</span></span>
+         amount to increase each component by, 0-1 scale
         </li>
     </ul>
 
@@ -326,7 +339,9 @@
     <ol>
 
            <span class="types"><span class="type">color</span></span>
-        out
+
+
+
     </ol>
 
 
@@ -335,7 +350,7 @@
 </dd>
     <dt>
     <a name = "lerp"></a>
-    <strong>lerp (at, at, s)</strong>
+    <strong>lerp (a, b, s)</strong>
     </dt>
     <dd>
     Interpolate between two colors.
@@ -343,16 +358,16 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">at</span>
+        <li><span class="parameter">a</span>
             <span class="types"><span class="type">color</span></span>
-         end
+         at start
         </li>
-        <li><span class="parameter">at</span>
+        <li><span class="parameter">b</span>
             <span class="types"><span class="type">color</span></span>
-         end
+         at end
         </li>
         <li><span class="parameter">s</span>
-            <span class="types"><span class="type">number</span></span>
+            <span class="types"><span class="type">float</span></span>
          in 0-1 progress between the two colors
         </li>
     </ul>
@@ -370,7 +385,7 @@
 </dd>
     <dt>
     <a name = "unpack"></a>
-    <strong>unpack (to)</strong>
+    <strong>unpack (c)</strong>
     </dt>
     <dd>
     Unpack a color into individual components in 0-1.
@@ -378,25 +393,25 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">c</span>
             <span class="types"><span class="type">color</span></span>
-         unpack
+         to unpack
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">float</span></span>
         r in 0-1</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">float</span></span>
         g in 0-1</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">float</span></span>
         b in 0-1</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">float</span></span>
         a in 0-1</li>
     </ol>
 
@@ -406,7 +421,7 @@
 </dd>
     <dt>
     <a name = "as_255"></a>
-    <strong>as_255 (to)</strong>
+    <strong>as_255 (c)</strong>
     </dt>
     <dd>
     Unpack a color into individual components in 0-255.
@@ -414,25 +429,25 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">c</span>
             <span class="types"><span class="type">color</span></span>
-         unpack
+         to unpack
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">int</span></span>
         r in 0-255</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">int</span></span>
         g in 0-255</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">int</span></span>
         b in 0-255</li>
         <li>
-           <span class="types"><span class="type">number</span></span>
+           <span class="types"><span class="type">int</span></span>
         a in 0-255</li>
     </ol>
 
@@ -442,7 +457,7 @@
 </dd>
     <dt>
     <a name = "darken"></a>
-    <strong>darken (to, amount)</strong>
+    <strong>darken (c, v)</strong>
     </dt>
     <dd>
     Darken a color by a component-wise fixed amount (alpha unchanged)
@@ -450,13 +465,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">c</span>
             <span class="types"><span class="type">color</span></span>
-         darken
+         to darken
         </li>
-        <li><span class="parameter">amount</span>
-            <span class="types"><span class="type">number</span></span>
-         to decrease each component by, 0-1 scale
+        <li><span class="parameter">v</span>
+            <span class="types"><span class="type">int</span></span>
+         amount to decrease each component by, 0-1 scale
         </li>
     </ul>
 
@@ -473,7 +488,7 @@
 </dd>
     <dt>
     <a name = "multiply"></a>
-    <strong>multiply (to, to)</strong>
+    <strong>multiply (c, v)</strong>
     </dt>
     <dd>
     Multiply a color's components by a value (alpha unchanged)
@@ -481,13 +496,44 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
-            <span class="types"><span class="type">number</span></span>
-         multiply each component by
+        <li><span class="parameter">c</span>
+            <span class="types"><span class="type">color</span></span>
+         to multiply
         </li>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">v</span>
             <span class="types"><span class="type">number</span></span>
-         multiply each component by
+         to multiply each component by
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">color</span></span>
+        out
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "alpha"></a>
+    <strong>alpha (c, v)</strong>
+    </dt>
+    <dd>
+    directly set alpha channel
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">c</span>
+            <span class="types"><span class="type">color</span></span>
+         to alter
+        </li>
+        <li><span class="parameter">v</span>
+            <span class="types"><span class="type">float</span></span>
+         new alpha 0-1
         </li>
     </ul>
 
@@ -504,7 +550,7 @@
 </dd>
     <dt>
     <a name = "opacity"></a>
-    <strong>opacity (to, to)</strong>
+    <strong>opacity (c, v)</strong>
     </dt>
     <dd>
     Multiply a color's alpha by a value
@@ -512,13 +558,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
-            <span class="types"><span class="type">number</span></span>
-         multiply alpha by
+        <li><span class="parameter">c</span>
+            <span class="types"><span class="type">color</span></span>
+         to multiply
         </li>
-        <li><span class="parameter">to</span>
-            <span class="types"><span class="type">number</span></span>
-         multiply alpha by
+        <li><span class="parameter">v</span>
+            <span class="types"><span class="type">float</span></span>
+         to multiply alpha by
         </li>
     </ul>
 
@@ -535,7 +581,7 @@
 </dd>
     <dt>
     <a name = "hue"></a>
-    <strong>hue (to, to)</strong>
+    <strong>hue (col, hue)</strong>
     </dt>
     <dd>
     Set a color's hue (saturation, value, alpha unchanged)
@@ -543,13 +589,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#hue">hue</a></span>
-         set 0-1
+        <li><span class="parameter">col</span>
+            <span class="types"><span class="type">color</span></span>
+         to alter
         </li>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#hue">hue</a></span>
-         set 0-1
+        <li><span class="parameter">hue</span>
+            <span class="types"><span class="type">float</span></span>
+         to set 0-1
         </li>
     </ul>
 
@@ -566,7 +612,7 @@
 </dd>
     <dt>
     <a name = "saturation"></a>
-    <strong>saturation (to, to)</strong>
+    <strong>saturation (col, percent)</strong>
     </dt>
     <dd>
     Set a color's saturation (hue, value, alpha unchanged)
@@ -574,13 +620,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#saturation">saturation</a></span>
-         set 0-1
+        <li><span class="parameter">col</span>
+            <span class="types"><span class="type">color</span></span>
+         to alter
         </li>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#saturation">saturation</a></span>
-         set 0-1
+        <li><span class="parameter">percent</span>
+            <span class="types"><span class="type">float</span></span>
+         to set 0-1
         </li>
     </ul>
 
@@ -597,7 +643,7 @@
 </dd>
     <dt>
     <a name = "value"></a>
-    <strong>value (to, to)</strong>
+    <strong>value (col, percent)</strong>
     </dt>
     <dd>
     Set a color's value (saturation, hue, alpha unchanged)
@@ -605,13 +651,13 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#value">value</a></span>
-         set 0-1
+        <li><span class="parameter">col</span>
+            <span class="types"><span class="type">color</span></span>
+         to alter
         </li>
-        <li><span class="parameter">to</span>
-            <span class="types"><a class="type" href="../modules/math.color.html#value">value</a></span>
-         set 0-1
+        <li><span class="parameter">percent</span>
+            <span class="types"><span class="type">float</span></span>
+         to set 0-1
         </li>
     </ul>
 
@@ -627,8 +673,106 @@
 
 </dd>
     <dt>
+    <a name = "gamma_to_linear"></a>
+    <strong>gamma_to_linear (r, g, b, a)</strong>
+    </dt>
+    <dd>
+    convert gamma to linear.
+ https://en.wikipedia.org/wiki/SRGB#From<em>sRGB</em>to<em>CIE</em>XYZ
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">g</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1 (optional)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        r 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        g 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        b 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        a 0-1</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "linear_to_gamma"></a>
+    <strong>linear_to_gamma (r, g, b, a)</strong>
+    </dt>
+    <dd>
+    convert linear to gamma.
+ https://en.wikipedia.org/wiki/SRGB#From<em>CIE</em>XYZ<em>to</em>sRGB
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">r</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">g</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">b</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1
+        </li>
+        <li><span class="parameter">a</span>
+            <span class="types"><span class="type">float</span></span>
+         0-1 (optional)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        r 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        g 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        b 0-1</li>
+        <li>
+           <span class="types"><span class="type">float</span></span>
+        a 0-1</li>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "is_color"></a>
-    <strong>is_color (to)</strong>
+    <strong>is_color (a)</strong>
     </dt>
     <dd>
     Check if color is valid
@@ -636,9 +780,9 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">to</span>
+        <li><span class="parameter">a</span>
             <span class="types"><span class="type">color</span></span>
-         test
+         to test
         </li>
     </ul>
 
@@ -733,7 +877,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2024-12-21 20:53:57 </i>
+<i style="float:right;">Last updated 2024-12-23 14:26:55 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
