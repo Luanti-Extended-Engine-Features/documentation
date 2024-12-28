@@ -90,11 +90,11 @@
 	<td class="summary">Construct a bound covering one or two points</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#extend">extend (a, point)</a></td>
+	<td class="name" nowrap><a href="#extend">extend (a, center)</a></td>
 	<td class="summary">Extend bound to include point</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#extend_bound">extend_bound (a, bound)</a></td>
+	<td class="name" nowrap><a href="#extend_bound">extend_bound (a, b)</a></td>
 	<td class="summary">Extend bound to entirety of other bound</td>
 	</tr>
 	<tr>
@@ -102,7 +102,7 @@
 	<td class="summary">Get size of bounding box as a vector</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#with_size">with_size (a, new)</a></td>
+	<td class="name" nowrap><a href="#with_size">with_size (a, size)</a></td>
 	<td class="summary">Resize bounding box from minimum corner</td>
 	</tr>
 	<tr>
@@ -114,11 +114,11 @@
 	<td class="summary">Get center of bounding box</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#with_center">with_center (a, new)</a></td>
+	<td class="name" nowrap><a href="#with_center">with_center (a, center)</a></td>
 	<td class="summary">Move bounding box to new center</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#with_size_centered">with_size_centered (a, new)</a></td>
+	<td class="name" nowrap><a href="#with_size_centered">with_size_centered (a, size)</a></td>
 	<td class="summary">Resize bounding box from center</td>
 	</tr>
 	<tr>
@@ -126,19 +126,19 @@
 	<td class="summary">Convert possibly-invalid bounding box to valid one</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#inset">inset (a, a)</a></td>
+	<td class="name" nowrap><a href="#inset">inset (a, v)</a></td>
 	<td class="summary">Shrink bounding box with fixed margin</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#outset">outset (a, a)</a></td>
+	<td class="name" nowrap><a href="#outset">outset (a, v)</a></td>
 	<td class="summary">Expand bounding box with fixed margin</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#offset">offset (a, offset)</a></td>
+	<td class="name" nowrap><a href="#offset">offset (a, v)</a></td>
 	<td class="summary">Offset bounding box</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#contains">contains (a, point)</a></td>
+	<td class="name" nowrap><a href="#contains">contains (a, v)</a></td>
 	<td class="summary">Test if point in bound</td>
 	</tr>
 	<tr>
@@ -165,13 +165,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">min</span>
-         Can be of two types: </br>
- vec2 min, minimum value for each component
- nil Create bound at single point 0,0
+         (<strong><em>vec2</em></strong> | <strong><em>nil</em></strong>) minimum value for each component. <code>nil</code> sets to zero.
         </li>
         <li><span class="parameter">max</span>
             <span class="types"><span class="type">vec2</span></span>
-        , maximum value for each component
+         maximum value for each component
         </li>
     </ul>
 
@@ -246,7 +244,7 @@
 </dd>
     <dt>
     <a name = "extend"></a>
-    <strong>extend (a, point)</strong>
+    <strong>extend (a, center)</strong>
     </dt>
     <dd>
     Extend bound to include point
@@ -256,11 +254,11 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
-        <li><span class="parameter">point</span>
+        <li><span class="parameter">center</span>
             <span class="types"><span class="type">vec2</span></span>
-         to include
+         point to include
         </li>
     </ul>
 
@@ -277,7 +275,7 @@
 </dd>
     <dt>
     <a name = "extend_bound"></a>
-    <strong>extend_bound (a, bound)</strong>
+    <strong>extend_bound (a, b)</strong>
     </dt>
     <dd>
     Extend bound to entirety of other bound
@@ -287,11 +285,11 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
-        <li><span class="parameter">bound</span>
+        <li><span class="parameter">b</span>
             <span class="types"><span class="type">bound2</span></span>
-         to cover
+         bound to cover
         </li>
     </ul>
 
@@ -318,7 +316,7 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
     </ul>
 
@@ -335,7 +333,7 @@
 </dd>
     <dt>
     <a name = "with_size"></a>
-    <strong>with_size (a, new)</strong>
+    <strong>with_size (a, size)</strong>
     </dt>
     <dd>
     Resize bounding box from minimum corner
@@ -345,11 +343,11 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
-        <li><span class="parameter">new</span>
+        <li><span class="parameter">size</span>
             <span class="types"><span class="type">vec2</span></span>
-         size
+         new size
         </li>
     </ul>
 
@@ -376,7 +374,7 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
     </ul>
 
@@ -403,7 +401,7 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
     </ul>
 
@@ -420,7 +418,7 @@
 </dd>
     <dt>
     <a name = "with_center"></a>
-    <strong>with_center (a, new)</strong>
+    <strong>with_center (a, center)</strong>
     </dt>
     <dd>
     Move bounding box to new center
@@ -430,11 +428,11 @@
     <ul>
         <li><span class="parameter">a</span>
             <span class="types"><span class="type">bound2</span></span>
-         bound
+         a bound
         </li>
-        <li><span class="parameter">new</span>
+        <li><span class="parameter">center</span>
             <span class="types"><span class="type">vec2</span></span>
-         center
+         new center
         </li>
     </ul>
 
@@ -451,7 +449,7 @@
 </dd>
     <dt>
     <a name = "with_size_centered"></a>
-    <strong>with_size_centered (a, new)</strong>
+    <strong>with_size_centered (a, size)</strong>
     </dt>
     <dd>
     Resize bounding box from center
@@ -463,9 +461,9 @@
             <span class="types"><span class="type">bound2</span></span>
          bound
         </li>
-        <li><span class="parameter">new</span>
+        <li><span class="parameter">size</span>
             <span class="types"><span class="type">vec2</span></span>
-         size
+         new size
         </li>
     </ul>
 
@@ -509,7 +507,7 @@
 </dd>
     <dt>
     <a name = "inset"></a>
-    <strong>inset (a, a)</strong>
+    <strong>inset (a, v)</strong>
     </dt>
     <dd>
     Shrink bounding box with fixed margin
@@ -518,10 +516,10 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">a</span>
-            <span class="types"><span class="type">vec2</span></span>
-         margin
+            <span class="types"><span class="type">bound2</span></span>
+         bound
         </li>
-        <li><span class="parameter">a</span>
+        <li><span class="parameter">v</span>
             <span class="types"><span class="type">vec2</span></span>
          margin
         </li>
@@ -540,7 +538,7 @@
 </dd>
     <dt>
     <a name = "outset"></a>
-    <strong>outset (a, a)</strong>
+    <strong>outset (a, v)</strong>
     </dt>
     <dd>
     Expand bounding box with fixed margin
@@ -549,10 +547,10 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">a</span>
-            <span class="types"><span class="type">vec2</span></span>
-         margin
+            <span class="types"><span class="type">bound2</span></span>
+         bound
         </li>
-        <li><span class="parameter">a</span>
+        <li><span class="parameter">v</span>
             <span class="types"><span class="type">vec2</span></span>
          margin
         </li>
@@ -571,7 +569,7 @@
 </dd>
     <dt>
     <a name = "offset"></a>
-    <strong>offset (a, offset)</strong>
+    <strong>offset (a, v)</strong>
     </dt>
     <dd>
     Offset bounding box
@@ -583,11 +581,9 @@
             <span class="types"><span class="type">bound2</span></span>
          bound
         </li>
-        <li><span class="parameter">offset</span>
+        <li><span class="parameter">v</span>
             <span class="types"><span class="type">vec2</span></span>
-
-
-
+         offset
         </li>
     </ul>
 
@@ -604,7 +600,7 @@
 </dd>
     <dt>
     <a name = "contains"></a>
-    <strong>contains (a, point)</strong>
+    <strong>contains (a, v)</strong>
     </dt>
     <dd>
     Test if point in bound
@@ -616,9 +612,9 @@
             <span class="types"><span class="type">bound2</span></span>
          bound
         </li>
-        <li><span class="parameter">point</span>
+        <li><span class="parameter">v</span>
             <span class="types"><span class="type">vec2</span></span>
-         to test
+         point to test
         </li>
     </ul>
 
@@ -667,7 +663,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2024-12-23 14:47:55 </i>
+<i style="float:right;">Last updated 2024-12-27 18:19:29 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

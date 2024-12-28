@@ -7,7 +7,12 @@ file = {
    "./LEEF-b3d",
    "./LEEF-class",
    "./LEEF-filesystem",
-   "./LEEF-math/modules"
+   "./LEEF-math/modules",
+   exclude = {
+      "./LEEF-class/init.lua",
+      "./LEEF-b3d/init.lua",
+      "./LEEF-filesystem/init.lua"
+   }
 }
 dir="./docs"
 style="!new"
