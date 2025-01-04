@@ -40,9 +40,9 @@
 <h2>Modules</h2>
 <ul class="nowrap">
   <li><a href="../modules/b3d_reader.html">b3d_reader</a></li>
-  <li><strong>b3d_writer</strong></li>
+  <li><a href="../modules/b3d_writer.html">b3d_writer</a></li>
   <li><a href="../modules/b3d_nodes.html">b3d_nodes</a></li>
-  <li><a href="../modules/proxy_table.html">proxy_table</a></li>
+  <li><strong>proxy_table</strong></li>
   <li><a href="../modules/binary.html">binary</a></li>
   <li><a href="../modules/utils.html">utils</a></li>
   <li><a href="../modules/paths.html">paths</a></li>
@@ -70,20 +70,18 @@
 
 <div id="content">
 
-<h1>Module <code>b3d_writer</code></h1>
-<p>writes b3d models in the same format as outputted by the b3d reader modul</p>
-<p> This is apart of the <a href="https://github.com/Luanti-Extended-Engine-Features/LEEF-b3d">LEEF-b3d</a> module</p>
+<h1>Module <code>proxy_table</code></h1>
+<p>allows the creation of a "proxy" for a a real table which prevents modification while still following any changes to the original table.</p>
+<p> This works with a given tree of tables.
+ be warned that these objects do not prevent the garbage collection of the table they are from. The table of origin (the one they are reproducing) can be accessed with the variable <code>__LEEF_PROXY_PARENT</code>.
+ this means you will <strong>NEED TO KEEP A COPY</strong> of whatever table you are protecting.</p>
 
 
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#write_string">write_string (self)</a></td>
-	<td class="summary">output a string of binary in the blitz 3d format</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#write_model_to_file">write_model_to_file (self, stream)</a></td>
-	<td class="summary">output in the blitz3d format file reference</td>
+	<td class="name" nowrap><a href="#new">new (table)</a></td>
+	<td class="summary">create a new proxy table</td>
 	</tr>
 </table>
 
@@ -95,48 +93,26 @@
 
     <dl class="function">
     <dt>
-    <a name = "write_string"></a>
-    <strong>write_string (self)</strong>
+    <a name = "new"></a>
+    <strong>new (table)</strong>
     </dt>
     <dd>
-    output a string of binary in the blitz 3d format
+    create a new proxy table
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">self</span>
-         <a href="../modules/b3d_reader.html#BB3D">BB3D</a>
+        <li><span class="parameter">table</span>
+            <span class="types"><span class="type">table</span></span>
+         to create immutable interface for
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        string containing the binary file
+        Proxy table
     </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "write_model_to_file"></a>
-    <strong>write_model_to_file (self, stream)</strong>
-    </dt>
-    <dd>
-    output in the blitz3d format file reference
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">self</span>
-         <a href="../modules/b3d_reader.html#BB3D">BB3D</a>
-        </li>
-        <li><span class="parameter">stream</span>
-         io file object to write to
-        </li>
-    </ul>
-
 
 
 
