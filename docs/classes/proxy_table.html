@@ -33,9 +33,8 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Functions">Functions</a></li>
-<li><a href="#Tables">Tables</a></li>
 <li><a href="#Fields">Fields</a></li>
+<li><a href="#functions">functions </a></li>
 </ul>
 
 
@@ -73,46 +72,40 @@
 <div id="content">
 
 <h1>Class <code>proxy_table</code></h1>
-<p>immutable proxy tables for protection of variables.</p>
-<p> WARNING: this is not technically a class, it is not based off <code>new_class</code>. And thus does not have an inherit or construct method.</p>
+<p>allows the creation of a "proxy" for a real table or structure of tables which prevents modification but inheriting the values of the parent table.</p>
+<p> constructor accepts a custom function for handling attempts to change the value of fields. Defaults to an error message.</p>
 
-<p> The point of this module is to allow somebody to create a read only table based off of a normal lua table. Attempting to modify a proxy table will throw an error.
- also note there is no good way to print this because tables are tied to their proxies independently, and then grabbed through the __index method rather then keeping a "working tree" of sub-tables.
- This is apart of the <a href="https://github.com/Luanti-Extended-Engine-Features/LEEF-class">LEEF-class</a> module.</p>
-
-<p> subtables will belong to the first proxy structure that contains it, an unintended consequence of this is that destroying proxy tables that share proxys will likely result in the proxy table having
- to be reinstantiated (automatically) on the next __index call for it. (While this is technically avoidable, it'd make things more complicated and this codebase is already messy.)</p>
-
-<p> class is found as <code>leef.proxy_table</code>.</p>
+<p> This works with a given tree of tables.</p>
 
 
-<h2><a href="#Functions">Functions</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#leef.proxy_table.new">leef.proxy_table.new (og_table, parent)</a></td>
-	<td class="summary">create a new proxy table</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Proxy_table.get_or_create">Proxy_table.get_or_create (og_table, parent)</a></td>
-	<td class="summary">get (if it exists) or create a proxy table from an original</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Proxy_table.destroy_proxy">Proxy_table.destroy_proxy (parent)</a></td>
-	<td class="summary">removes all local references to the parent table, it's proxy, aswell as subtables and their proxies.</td>
-	</tr>
-</table>
-<h2><a href="#Tables">Tables</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#leef.proxy_table">leef.proxy_table</a></td>
-	<td class="summary">global variables</td>
-	</tr>
-</table>
 <h2><a href="#Fields">Fields</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#proxy_table.__proxy_table_parent">proxy_table.__proxy_table_parent</a></td>
-	<td class="summary">variable indicating the highest level table in the structure</td>
+	<td class="name" nowrap><a href="#p.__LEEF_PROXY_OVERRIDES">p.__LEEF_PROXY_OVERRIDES</a></td>
+	<td class="summary">the proxy's overriden values and child tables</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#p.__LEEF_NEWINDEX_HANDLER">p.__LEEF_NEWINDEX_HANDLER</a></td>
+	<td class="summary">the proxy's index handling function</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#p.__LEEF_PROXY_PARENT">p.__LEEF_PROXY_PARENT</a></td>
+	<td class="summary">the proxy's parent table that it gets its values from</td>
+	</tr>
+</table>
+<h2><a href="#functions">functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#proxy_table:set_field_override">proxy_table:set_field_override (proxy, key, value)</a></td>
+	<td class="summary">sets an override on the proxy's fields.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#proxy_table:new">proxy_table:new (table, newindex_handling_func)</a></td>
+	<td class="summary">create a new proxy table</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#proxy_table:is_proxy">proxy_table:is_proxy (value)</a></td>
+	<td class="summary">check if its a proxy table</td>
 	</tr>
 </table>
 
@@ -120,12 +113,89 @@
 <br/>
 
 
-    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
 
     <dl class="function">
     <dt>
-    <a name = "leef.proxy_table.new"></a>
-    <strong>leef.proxy_table.new (og_table, parent)</strong>
+    <a name = "p.__LEEF_PROXY_OVERRIDES"></a>
+    <strong>p.__LEEF_PROXY_OVERRIDES</strong>
+    </dt>
+    <dd>
+    the proxy's overriden values and child tables
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "p.__LEEF_NEWINDEX_HANDLER"></a>
+    <strong>p.__LEEF_NEWINDEX_HANDLER</strong>
+    </dt>
+    <dd>
+    the proxy's index handling function
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "p.__LEEF_PROXY_PARENT"></a>
+    <strong>p.__LEEF_PROXY_PARENT</strong>
+    </dt>
+    <dd>
+    the proxy's parent table that it gets its values from
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="functions"></a>functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "proxy_table:set_field_override"></a>
+    <strong>proxy_table:set_field_override (proxy, key, value)</strong>
+    </dt>
+    <dd>
+    sets an override on the proxy's fields.  You can use this in the <code>newindex_handling_func</code> param to allow proxy tables to be modified
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">proxy</span>
+            <span class="types"><span class="type">proxy</span></span>
+         the proxy table
+        </li>
+        <li><span class="parameter">key</span>
+
+
+
+        </li>
+        <li><span class="parameter">value</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "proxy_table:new"></a>
+    <strong>proxy_table:new (table, newindex_handling_func)</strong>
     </dt>
     <dd>
     create a new proxy table
@@ -133,18 +203,20 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">og_table</span>
-         original table
+        <li><span class="parameter">table</span>
+            <span class="types"><span class="type">table</span></span>
+         to create immutable interface for
         </li>
-        <li><span class="parameter">parent</span>
-         (optional) this is used internally to define which high level table a child proxy belongs to
+        <li><span class="parameter">newindex_handling_func</span>
+            <span class="types"><span class="type">functions</span></span>
+         <code>function(proxy, original_object, key, value)</code> to call when the proxy table has an attempted set
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        proxy table
+        Proxy table
     </ol>
 
 
@@ -152,103 +224,28 @@
 
 </dd>
     <dt>
-    <a name = "Proxy_table.get_or_create"></a>
-    <strong>Proxy_table.get_or_create (og_table, parent)</strong>
+    <a name = "proxy_table:is_proxy"></a>
+    <strong>proxy_table:is_proxy (value)</strong>
     </dt>
     <dd>
-    get (if it exists) or create a proxy table from an original
+    check if its a proxy table
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">og_table</span>
-         original table
-        </li>
-        <li><span class="parameter">parent</span>
-         (optional) this is used internally to define which high level table a child proxy belongs to (if a new one is created.)
+        <li><span class="parameter">value</span>
+         value it check if proxy
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        proxy table
+           <span class="types"><span class="type">bool</span></span>
+
+
+
     </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Proxy_table.destroy_proxy"></a>
-    <strong>Proxy_table.destroy_proxy (parent)</strong>
-    </dt>
-    <dd>
-    removes all local references to the parent table, it's proxy, aswell as subtables and their proxies.  This obviously will not GC unless the refs are cleared from all other variables globally.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">parent</span>
-         the table/parent of subtables you wish to remove.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</dl>
-    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
-
-    <dl class="function">
-    <dt>
-    <a name = "leef.proxy_table"></a>
-    <strong>leef.proxy_table</strong>
-    </dt>
-    <dd>
-    global variables
-
-
-    <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">proxies_by_tables</span>
-         a list of proxy tables indexed by their original tables
-        </li>
-        <li><span class="parameter">tables_by_proxies</span>
-         a list of original tables indexed by their proxy tables
-        </li>
-        <li><span class="parameter">proxy_children</span>
-         lists of children indexed by their highest level parent table. I.e. <code>{ [parent_ref1] = {child_proxy1, child_proxy2},  [parent_ref2] = {...} }</code>
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</dl>
-    <h2 class="section-header "><a name="Fields"></a>Fields</h2>
-
-    <dl class="function">
-    <dt>
-    <a name = "proxy_table.__proxy_table_parent"></a>
-    <strong>proxy_table.__proxy_table_parent</strong>
-    </dt>
-    <dd>
-    variable indicating the highest level table in the structure
-
-
-    <ul>
-        <li><span class="parameter">__proxy_table_parent</span>
-
-
-
-        </li>
-    </ul>
-
 
 
 
@@ -261,7 +258,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2024-12-27 18:50:59 </i>
+<i style="float:right;">Last updated 2025-01-10 10:51:02 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

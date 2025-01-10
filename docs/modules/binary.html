@@ -33,8 +33,8 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#expected_function_inputs">expected function inputs </a></li>
 <li><a href="#functions">functions </a></li>
+<li><a href="#expected_function_inputs">expected function inputs </a></li>
 <li><a href="#misc_binary_helpers">misc binary helpers </a></li>
 </ul>
 
@@ -44,7 +44,6 @@
   <li><a href="../modules/b3d_reader.html">b3d_reader</a></li>
   <li><a href="../modules/b3d_writer.html">b3d_writer</a></li>
   <li><a href="../modules/b3d_nodes.html">b3d_nodes</a></li>
-  <li><a href="../modules/proxy_table.html">proxy_table</a></li>
   <li><strong>binary</strong></li>
   <li><a href="../modules/utils.html">utils</a></li>
   <li><a href="../modules/paths.html">paths</a></li>
@@ -66,6 +65,7 @@
 <h2>Classes</h2>
 <ul class="nowrap">
   <li><a href="../classes/new_class.html">new_class</a></li>
+  <li><a href="../classes/proxy_table.html">proxy_table</a></li>
 </ul>
 
 </div>
@@ -77,17 +77,6 @@
 <p> This is apart of the <a href="https://github.com/Luanti-Extended-Engine-Features/LEEF-filesystem">LEEF-filesystem</a> module.</p>
 
 
-<h2><a href="#expected_function_inputs">expected function inputs </a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#read_byte">read_byte ()</a></td>
-	<td class="summary"><code>read_byte</code> is a param name which refers to a function which reads the next byte- returning a whole number between 0-255.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#write_byte">write_byte ()</a></td>
-	<td class="summary"><code>write_byte</code> is similar to read_byte, however it is given an input and expected to write it to the file.</td>
-	</tr>
-</table>
 <h2><a href="#functions">functions </a></h2>
 <table class="function_list">
 	<tr>
@@ -111,6 +100,17 @@
 	<td class="summary">writing binary</td>
 	</tr>
 </table>
+<h2><a href="#expected_function_inputs">expected function inputs </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#read_byte">read_byte ()</a></td>
+	<td class="summary"><code>read_byte</code> is a param name which refers to a function which reads the next byte- returning a whole number between 0-255.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#write_byte">write_byte ()</a></td>
+	<td class="summary"><code>write_byte</code> is similar to read_byte, however it is given an input and expected to write it to the file.</td>
+	</tr>
+</table>
 <h2><a href="#misc_binary_helpers">misc binary helpers </a></h2>
 <table class="function_list">
 	<tr>
@@ -123,57 +123,6 @@
 <br/>
 
 
-    <h2 class="section-header has-description"><a name="expected_function_inputs"></a>expected function inputs </h2>
-
-          <div class="section-description">
-           functions will expect either a <code>read_byte</code> or <code>write_byte</code> function as inputs
-          </div>
-    <dl class="function">
-    <dt>
-    <a name = "read_byte"></a>
-    <strong>read_byte ()</strong>
-    </dt>
-    <dd>
-
-<p><code>read_byte</code> is a param name which refers to a function which reads the next byte- returning a whole number between 0-255. </p>
-
-<pre><code>function byte()
-    left = left - 1
-    return assert(file_handle:read(1):byte())
-    --reads the next chracter, and converts it to a "numerical code" using string.byte()
-    --it's important that this function moves forward in the file stream (as :read(1) does)
-end
-</code></pre>
-
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-        a bytecode (an int between 0 and 255.)
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "write_byte"></a>
-    <strong>write_byte ()</strong>
-    </dt>
-    <dd>
-    <code>write_byte</code> is similar to read_byte, however it is given an input and expected to write it to the file.
- (example needed)
-
-
-
-
-
-
-
-</dd>
-</dl>
     <h2 class="section-header "><a name="functions"></a>functions </h2>
 
     <dl class="function">
@@ -312,6 +261,57 @@ end
 
 </dd>
 </dl>
+    <h2 class="section-header has-description"><a name="expected_function_inputs"></a>expected function inputs </h2>
+
+          <div class="section-description">
+           functions will expect either a <code>read_byte</code> or <code>write_byte</code> function as inputs
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "read_byte"></a>
+    <strong>read_byte ()</strong>
+    </dt>
+    <dd>
+
+<p><code>read_byte</code> is a param name which refers to a function which reads the next byte- returning a whole number between 0-255. </p>
+
+<pre><code>function byte()
+    left = left - 1
+    return assert(file_handle:read(1):byte())
+    --reads the next chracter, and converts it to a "numerical code" using string.byte()
+    --it's important that this function moves forward in the file stream (as :read(1) does)
+end
+</code></pre>
+
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        a bytecode (an int between 0 and 255.)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "write_byte"></a>
+    <strong>write_byte ()</strong>
+    </dt>
+    <dd>
+    <code>write_byte</code> is similar to read_byte, however it is given an input and expected to write it to the file.
+ (example needed)
+
+
+
+
+
+
+
+</dd>
+</dl>
     <h2 class="section-header "><a name="misc_binary_helpers"></a>misc binary helpers </h2>
 
     <dl class="function">
@@ -349,7 +349,7 @@ end
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
-<i style="float:right;">Last updated 2025-01-05 02:17:13 </i>
+<i style="float:right;">Last updated 2025-01-10 10:51:02 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
