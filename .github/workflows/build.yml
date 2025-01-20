@@ -7,6 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Checkout to this repo
+        uses: actions/checkout@v4
+
       - name: checkout b3d
         uses: actions/checkout@v4
         with:
@@ -30,9 +33,6 @@ jobs:
         with:
           repository: "Luanti-Extended-Engine-Features/LEEF-class"
           path: "./LEEF-class"
-
-      - name: Checkout to this repo
-        uses: actions/checkout@v4
 
       - name: Generate docs with LDoc
         uses: lunarmodules/ldoc@v1
