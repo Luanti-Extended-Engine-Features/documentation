@@ -10,25 +10,25 @@ jobs:
       - name: checkout b3d
         uses: actions/checkout@v4
         with:
-          repository: "LEEF-b3d"
+          repository: "Luanti-Extended-Engine-Features/LEEF-b3d"
           path: "./LEEF-b3d"
 
       - name: checkout math
         uses: actions/checkout@v4
         with:
-          repository: "LEEF-math"
+          repository: "Luanti-Extended-Engine-Features/LEEF-math"
           path: "./LEEF-math"
 
       - name: checkout filesystem
         uses: actions/checkout@v4
         with:
-          repository: "LEEF-filesystem"
+          repository: "Luanti-Extended-Engine-Features/LEEF-filesystem"
           path: "./LEEF-filesystem"
 
       - name: checkout class
         uses: actions/checkout@v4
         with:
-          repository: "LEEF-class"
+          repository: "Luanti-Extended-Engine-Features/LEEF-class"
           path: "./LEEF-class"
 
       - name: Checkout to this repo
