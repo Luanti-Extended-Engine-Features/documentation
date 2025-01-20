@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate docs with LDoc
-        uses: lunarmodules/ldoc@v0
+        uses: lunarmodules/ldoc@v1
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
