@@ -1,6 +1,8 @@
 name: Build docs
 
-on: push
+on:
+  repository_dispatch:
+    types: ["build_docs"]
 
 permissions:
   contents: read
